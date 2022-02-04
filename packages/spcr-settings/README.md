@@ -30,6 +30,8 @@ async function main() {
   
   settings.addDropDown("random-dropdown", "A random dropdown", ['Option 1', 'Option 2', 'Option 3'], 2);
 
+  settings.addHidden("last-page-visited", "Page 1"); // Settings without UI
+
   settings.pushSettings();
 }
 
