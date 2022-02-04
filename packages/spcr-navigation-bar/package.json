@@ -2,6 +2,6 @@
   "name": "spcr-navigation-bar",
   "version": "0.0.1",
   "description": "Navigation bar for Spicetify Creator custom apps",
-  "main": "useNavBar.tsx",
+  "main": "useNavigationBar.tsx",
   "license": "MIT"
 }
