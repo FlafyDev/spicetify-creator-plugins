@@ -1,13 +1,3 @@
-declare module '*.module.css' {
-    const classes: { [key: string]: string };
-    export default classes;
-}
-
-declare module '*.module.scss' {
-    const classes: { [key: string]: string };
-    export default classes;
-}
-
 declare namespace Spicetify {
     type Metadata = Partial<Record<string, string>>;
     type ContextTrack = {
