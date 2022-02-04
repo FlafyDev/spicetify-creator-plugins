@@ -1,6 +1,6 @@
-# Spicetify Creator - Navigation Bar Plugin
+# Navigation Bar Plugin
 #### Supports custom apps
-A Plugin for [Spicetify Creator](https://github.com/FlafyDev/spicetify-creator) to easily add a navigation bar to your custom app
+Easily add navigation bars to your custom apps
 
 
 ## Getting Started

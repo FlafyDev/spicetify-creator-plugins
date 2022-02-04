@@ -1,6 +1,6 @@
-# Spicetify Creator - Settings Plugin
+# Settings Plugin
 #### Supports both extensions and custom apps
-A Plugin for [Spicetify Creator](https://github.com/FlafyDev/spicetify-creator) to easily create settings for your app
+Easily add settings to your apps
 
 
 ## Getting Started
