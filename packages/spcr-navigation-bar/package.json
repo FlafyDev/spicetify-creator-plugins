@@ -3,5 +3,11 @@
   "version": "0.0.1",
   "description": "Navigation bar for Spicetify Creator custom apps",
   "main": "useNavigationBar.tsx",
-  "license": "MIT"
+  "repository": "github:FlafyDev/spicetify-creator-plugins",
+  "author": "FlafyDev",
+  "license": "MIT",
+  "dependencies": {
+    "@types/react": "^17.0.39",
+    "@types/react-dom": "^17.0.11"
+  }
 }

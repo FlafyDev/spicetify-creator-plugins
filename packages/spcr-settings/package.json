@@ -1,12 +1,10 @@
 {
   "name": "spcr-settings",
   "version": "0.1.2",
-  "description": "",
+  "description": "Settings for Spicetify Creator projects",
   "main": "settingsSection.tsx",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "",
+  "repository": "github:FlafyDev/spicetify-creator-plugins",
+  "author": "FlafyDev",
   "license": "MIT",
   "dependencies": {
     "@types/react": "^17.0.38",
