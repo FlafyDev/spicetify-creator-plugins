@@ -1,6 +1,6 @@
 {
   "name": "spcr-navigation-bar",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Navigation bar for Spicetify Creator custom apps",
   "main": "useNavigationBar.tsx",
   "repository": "github:FlafyDev/spicetify-creator-plugins",
