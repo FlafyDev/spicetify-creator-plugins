@@ -9,7 +9,7 @@ A Plugin for [Spicetify Creator](https://github.com/FlafyDev/spicetify-creator) 
 
 ## Preview
 ![Preview](./previewImage.png)
-```js
+```tsx
 import { SettingsSection } from "spcr-settings";
 
 async function main() {
