@@ -1,7 +1,7 @@
 # Navigation Bar Plugin
 #### Supports custom apps
-Easily add navigation bars to your custom apps
-
+Easily add navigation bars to your custom apps.  
+Heavily based on [the Reddit custom app](https://github.com/khanhas/spicetify-cli/wiki/Custom-Apps#reddit)'s TopBar system
 
 ## Getting Started
 1. Create a [Spicetify Creator](https://github.com/FlafyDev/spicetify-creator) project
