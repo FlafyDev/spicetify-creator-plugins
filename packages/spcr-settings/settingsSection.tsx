@@ -3,14 +3,14 @@ import ReactDOM from 'react-dom';
 import styles from './settings.module.css'
 
 class SettingsSection {
-  settingsFields: {[nameId: string]: ISettingsField} = { };
+  settingsFields: {[nameId: string]: ISettingsField} = {};
   private stopHistoryListener: any;
   private setRerender: Function | null = null;
 
   constructor(public name: string, public settingsId: string) { }
 
   pushSettings = async () => {
-    Object.entries(this.settingsFields).map(([nameId, field]) => {
+    Object.entries(this.settingsFields).forEach(([nameId, field]) => {
       if (field.type !== 'button' && this.getFieldValue(nameId) === undefined) {
         this.setFieldValue(nameId, field.defaultValue);
       }
@@ -47,38 +47,30 @@ class SettingsSection {
     }
 
     const allSettingsContainer = document.getElementsByClassName('x-settings-container')[0];
-    let pluginSettingsContainer: Element | null = null;
-  
-    for (let i = 0; i < allSettingsContainer.children.length; i++) {
-      if (allSettingsContainer.children[i].id === this.settingsId) {
-        pluginSettingsContainer = allSettingsContainer.children[i];
-      }
-    }
+    let pluginSettingsContainer = Array.from(allSettingsContainer.children).find((child) => child.id === this.settingsId)
   
     if (!pluginSettingsContainer) {
       pluginSettingsContainer = document.createElement('div');
       pluginSettingsContainer.id = this.settingsId;
       pluginSettingsContainer.className = styles.settingsContainer;
-      let advancedOptionsButton: Element | null = null;
+      let advancedOptionsButton: Element | undefined = undefined;
       let tries = 0;
 
       // Loop until "show advanced settings" button is found.
       while (true) {
         try {
           const buttons = allSettingsContainer.getElementsByClassName('x-settings-button');
-          for (let i = 0; i < buttons.length; i++) {
-            if (buttons[i].children[0]?.textContent?.toLowerCase().endsWith('advanced settings')) {
-              advancedOptionsButton = buttons[i];
-              break;
-            }
-          }
+          advancedOptionsButton = Array.from(buttons).find((button) => {
+            return button.children[0]?.textContent?.toLowerCase().endsWith('advanced settings')
+          })
         } catch (e) {
           console.error("Error while finding \"show advanced settings\" button:", e);
         }
         
         if (advancedOptionsButton) break
+        
         if (Spicetify.Platform.History.location.pathname !== '/preferences') {
-          console.log(`Couldn't find \"show advanced settings\" button after ${tries} tries.`);
+          console.warn(`[spcr-settings] couldn't find "show advanced settings" button after ${tries} tries.`);
           return;
         }
 
@@ -229,8 +221,6 @@ class SettingsSection {
       </span>
     </>
   }
-
-
 }
 
 interface ISettingsField {
