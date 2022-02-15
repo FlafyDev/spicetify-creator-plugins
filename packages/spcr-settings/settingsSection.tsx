@@ -1,13 +1,14 @@
 import React, { useState } from 'react'
 import ReactDOM from 'react-dom';
 import styles from './settings.module.css'
+import { ISettingsField, NewValueTypes } from './types/settings-field';
 
 class SettingsSection {
-  settingsFields: {[nameId: string]: ISettingsField} = {};
+  settingsFields: { [nameId: string]: ISettingsField } = this.initialSettingsFields;
   private stopHistoryListener: any;
   private setRerender: Function | null = null;
 
-  constructor(public name: string, public settingsId: string) { }
+  constructor(public name: string, public settingsId: string, public initialSettingsFields: { [key: string]: ISettingsField } = {}) {}
 
   pushSettings = async () => {
     Object.entries(this.settingsFields).forEach(([nameId, field]) => {
@@ -90,7 +91,7 @@ class SettingsSection {
   addButton = (nameId: string, description: string, value: string, onClick?: () => void) => {
     this.settingsFields[nameId] = {
       type: "button",
-      description: description,
+      description,
       defaultValue: value,
       callback: onClick,
     };
@@ -99,8 +100,8 @@ class SettingsSection {
   addInput = (nameId: string, description: string, defaultValue: string, onChange?: () => void) => {
     this.settingsFields[nameId] = {
       type: "input",
-      description: description,
-      defaultValue: defaultValue,
+      description,
+      defaultValue,
       callback: onChange,
     };
   }
@@ -136,7 +137,7 @@ class SettingsSection {
   }
 
   setFieldValue = (nameId: string, newValue: any) => {
-    Spicetify.LocalStorage.set(`${this.settingsId}.${nameId}`, JSON.stringify({value:newValue}));
+    Spicetify.LocalStorage.set(`${this.settingsId}.${nameId}`, JSON.stringify({ value: newValue }));
   }
 
   private FieldsContainer = () => {
@@ -151,7 +152,7 @@ class SettingsSection {
     </div>
   }
 
-  private Field = (props: {nameId: string, field: ISettingsField}) => {
+  private Field = (props: { nameId: string, field: ISettingsField }) => {
     const id = `${this.settingsId}.${props.nameId}`;
     
     let defaultStateValue;
@@ -167,13 +168,13 @@ class SettingsSection {
 
     const [value, setValueState] = useState(defaultStateValue);
     
-    const setValue = (newValue?: any) => {
+    const setValue = (newValue?: NewValueTypes) => {
       if (newValue !== undefined) {
         setValueState(newValue);
         this.setFieldValue(props.nameId!, newValue);
       }
       if (props.field.callback)
-        props.field.callback();
+        props.field.callback(newValue);
     }
 
     return <>
@@ -221,14 +222,6 @@ class SettingsSection {
       </span>
     </>
   }
-}
-
-interface ISettingsField {
-  type: "button" | "toggle" | "input" | "dropdown" | "hidden",
-  description?: string,
-  defaultValue: any,
-  callback?: () => void,
-  options?: string[],
 }
 
 export { SettingsSection };
