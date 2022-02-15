@@ -61,7 +61,7 @@ class SettingsSection {
         try {
           const buttons = allSettingsContainer.getElementsByClassName('x-settings-button');
           advancedOptionsButton = Array.from(buttons).find((button) => {
-            return button.children[0]?.textContent?.toLowerCase().endsWith('advanced settings')
+            return (button.children[0] as HTMLButtonElement)?.type === 'button';
           })
         } catch (e) {
           console.error("Error while finding \"show advanced settings\" button:", e);
