@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { KeyboardEventHandler, useState } from 'react'
 import ReactDOM from 'react-dom';
 import styles from './settings.module.css'
 import { ISettingsField, NewValueTypes } from './types/settings-field';
@@ -177,6 +177,16 @@ class SettingsSection {
         props.field.callback(newValue);
     }
 
+    const onKeyDown: KeyboardEventHandler<HTMLInputElement> = (e) => {
+      if (props.field.keyDown)
+        props.field.keyDown(e);
+    }
+
+    const onBlur: React.FocusEventHandler<HTMLInputElement> = (e) => {
+      if (props.field.blur)
+        props.field.blur(e);
+    }
+
     return <>
       <div className="main-type-mesto" style={{color: 'var(--spice-subtext)'}}><label htmlFor={id}>
         {props.field.description || ""}
@@ -184,9 +194,16 @@ class SettingsSection {
       <span className="x-settings-secondColumn">
         {
           props.field.type === 'input' ? 
-            <input className="main-dropDown-dropDown" id={id} dir="ltr" value={value as string} type={"text"} onChange={(e) => {
-              setValue(e.currentTarget.value);
-            }} /> :
+            <input
+              className="main-dropDown-dropDown"
+              id={id}
+              dir="ltr"
+              value={value as string}
+              type="text"
+              onKeyDown={onKeyDown}
+              onBlur={onBlur}
+              onChange={(e) => { setValue(e.currentTarget.value) } }
+            /> :
 
           props.field.type === 'button' ? 
             <span className="">
