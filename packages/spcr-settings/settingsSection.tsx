@@ -1,7 +1,7 @@
 import React, { KeyboardEventHandler, useState } from 'react'
 import ReactDOM from 'react-dom';
 import styles from './settings.module.css'
-import { ISettingsField, NewValueTypes } from './types/settings-field';
+import { ISettingsField, ISettingsFieldDropdown, ISettingsFieldInput, NewValueTypes } from './types/settings-field';
 
 class SettingsSection {
   settingsFields: { [nameId: string]: ISettingsField } = this.initialSettingsFields;
@@ -97,12 +97,13 @@ class SettingsSection {
     };
   }
 
-  addInput = (nameId: string, description: string, defaultValue: string, onChange?: () => void) => {
+  addInput = (nameId: string, description: string, defaultValue: string, onChange?: () => void, events?: ISettingsFieldInput['events']) => {
     this.settingsFields[nameId] = {
       type: "input",
       description,
       defaultValue,
       callback: onChange,
+      events,
     };
   }
 
@@ -168,23 +169,13 @@ class SettingsSection {
 
     const [value, setValueState] = useState(defaultStateValue);
     
-    const setValue = (newValue?: NewValueTypes) => {
+    const setValue = (newValue?: any) => {
       if (newValue !== undefined) {
         setValueState(newValue);
         this.setFieldValue(props.nameId!, newValue);
       }
-      if (props.field.callback)
+      if (props.field.type !== 'hidden' && props.field.callback)
         props.field.callback(newValue);
-    }
-
-    const onKeyDown: KeyboardEventHandler<HTMLInputElement> = (e) => {
-      if (props.field.keyDown)
-        props.field.keyDown(e);
-    }
-
-    const onBlur: React.FocusEventHandler<HTMLInputElement> = (e) => {
-      if (props.field.blur)
-        props.field.blur(e);
     }
 
     return <>
@@ -200,9 +191,8 @@ class SettingsSection {
               dir="ltr"
               value={value as string}
               type="text"
-              onKeyDown={onKeyDown}
-              onBlur={onBlur}
               onChange={(e) => { setValue(e.currentTarget.value) } }
+              {...props.field.events}
             /> :
 
           props.field.type === 'button' ? 
@@ -227,10 +217,10 @@ class SettingsSection {
           
           props.field.type === 'dropdown' ?
             <select className="main-dropDown-dropDown" id={id} onChange={(e) => {
-              setValue(props.field.options![e.currentTarget.selectedIndex])
+              setValue((props.field as ISettingsFieldDropdown).options[e.currentTarget.selectedIndex])
             }}>
               {
-                props.field.options!.map((option, i) => {
+                props.field.options.map((option, i) => {
                   return <option selected={option === value} value={i+1}>{option}</option>
                 })
               }
