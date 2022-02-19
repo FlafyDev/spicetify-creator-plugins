@@ -91,7 +91,7 @@ class SettingsSection {
   addButton = (nameId: string, description: string, value: string, onClick?: () => void, events?: ISettingsFieldButton['events']) => {
     this.settingsFields[nameId] = {
       type: "button",
-      description,
+      description: description,
       value: value,
       events: {
         onClick: onClick,
@@ -103,8 +103,8 @@ class SettingsSection {
   addInput = (nameId: string, description: string, defaultValue: string, onChange?: () => void, events?: ISettingsFieldInput['events']) => {
     this.settingsFields[nameId] = {
       type: "input",
-      description,
-      defaultValue,
+      description: description,
+      defaultValue: defaultValue,
       events: {
         onChange: onChange,
         ...events,
