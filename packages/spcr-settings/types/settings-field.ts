@@ -7,7 +7,6 @@ export interface ISettingsFieldInput {
     type: "input",
     description?: string,
     defaultValue: any,
-    callback?: (newValue?: string) => void,
     events?: Partial<React.InputHTMLAttributes<HTMLInputElement>>,
 }
 
@@ -16,27 +15,27 @@ export interface ISettingsFieldDropdown {
     description?: string,
     defaultValue: string,
     options: string[],
-    callback?: (newValue?: string) => void,
+    events?: Partial<React.SelectHTMLAttributes<HTMLSelectElement>>,
 }
 
 export interface ISettingsFieldButton {
     type: "button",
     description?: string,
-    defaultValue: any,
-    callback?: (newValue?: unknown) => void,
+    value: any,
+    events?: Partial<React.ButtonHTMLAttributes<HTMLButtonElement>>,
 }
 
-export interface ISettingsFieldGenericToggle {
+export interface ISettingsFieldToggle {
     type: "toggle",
     description?: string,
     defaultValue: boolean,
-    callback?: (newValue?: boolean) => void,
+    events?: Partial<React.InputHTMLAttributes<HTMLInputElement>>,
 }
 
 export type ISettingsField = ISettingsFieldHidden
     | ISettingsFieldDropdown
     | ISettingsFieldInput
     | ISettingsFieldButton
-    | ISettingsFieldGenericToggle;
+    | ISettingsFieldToggle;
 
 export type NewValueTypes = boolean | string;

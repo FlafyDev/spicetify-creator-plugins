@@ -1,7 +1,7 @@
-import React, { KeyboardEventHandler, useState } from 'react'
+import React, { useState } from 'react'
 import ReactDOM from 'react-dom';
 import styles from './settings.module.css'
-import { ISettingsField, ISettingsFieldDropdown, ISettingsFieldInput, NewValueTypes } from './types/settings-field';
+import { ISettingsField, ISettingsFieldButton, ISettingsFieldDropdown, ISettingsFieldInput, ISettingsFieldToggle, NewValueTypes } from './types/settings-field';
 
 class SettingsSection {
   settingsFields: { [nameId: string]: ISettingsField } = this.initialSettingsFields;
@@ -88,12 +88,15 @@ class SettingsSection {
     ReactDOM.render(<this.FieldsContainer />, pluginSettingsContainer)
   }
   
-  addButton = (nameId: string, description: string, value: string, onClick?: () => void) => {
+  addButton = (nameId: string, description: string, value: string, onClick?: () => void, events?: ISettingsFieldButton['events']) => {
     this.settingsFields[nameId] = {
       type: "button",
       description,
-      defaultValue: value,
-      callback: onClick,
+      value: value,
+      events: {
+        onClick: onClick,
+        ...events,
+      },
     };
   }
 
@@ -102,8 +105,10 @@ class SettingsSection {
       type: "input",
       description,
       defaultValue,
-      callback: onChange,
-      events,
+      events: {
+        onChange: onChange,
+        ...events,
+      },
     };
   }
 
@@ -114,22 +119,28 @@ class SettingsSection {
     };
   }
 
-  addToggle = (nameId: string, description: string, defaultValue: boolean, onInput?: () => void) => {
+  addToggle = (nameId: string, description: string, defaultValue: boolean, onChange?: () => void, events?: ISettingsFieldToggle['events']) => {
     this.settingsFields[nameId] = {
       type: "toggle",
       description: description,
       defaultValue: defaultValue,
-      callback: onInput,
+      events: {
+        onChange: onChange,
+        ...events,
+      }
     };
   }
 
-  addDropDown = (nameId: string, description: string, options: string[], defaultIndex: number, onSelect?: () => void) => {
+  addDropDown = (nameId: string, description: string, options: string[], defaultIndex: number, onSelect?: () => void, events?: ISettingsFieldDropdown['events']) => {
     this.settingsFields[nameId] = {
       type: "dropdown",
       description: description,
       defaultValue: options[defaultIndex],
-      callback: onSelect,
       options: options,
+      events: {
+        onSelect: onSelect,
+        ...events,
+      },
     };
   }
 
@@ -158,7 +169,7 @@ class SettingsSection {
     
     let defaultStateValue;
     if (props.field.type === "button") {
-      defaultStateValue = props.field.defaultValue;
+      defaultStateValue = props.field.value;
     } else {
       defaultStateValue = this.getFieldValue(props.nameId);
     }
@@ -174,8 +185,6 @@ class SettingsSection {
         setValueState(newValue);
         this.setFieldValue(props.nameId!, newValue);
       }
-      if (props.field.type !== 'hidden' && props.field.callback)
-        props.field.callback(newValue);
     }
 
     return <>
@@ -191,24 +200,45 @@ class SettingsSection {
               dir="ltr"
               value={value as string}
               type="text"
-              onChange={(e) => { setValue(e.currentTarget.value) } }
               {...props.field.events}
+              onChange={(e) => {
+                setValue(e.currentTarget.value);
+                const onChange = (props.field as ISettingsFieldInput).events?.onChange
+                if (onChange) onChange(e)
+              }}
             /> :
 
           props.field.type === 'button' ? 
             <span className="">
-              <button id={id} onClick={() => {
-                setValue();
-              }} className="main-buttons-button main-button-outlined" type="button">
+              <button
+                id={id}
+                className="main-buttons-button main-button-outlined"
+                {...props.field.events}
+                onClick={(e) => {
+                  setValue();
+                  const onClick = (props.field as ISettingsFieldButton).events?.onClick
+                  if (onClick) onClick(e)
+                }}
+                type="button"
+              >
                 {value}
               </button>
             </span> :
 
           props.field.type === 'toggle' ?
             <label className="x-toggle-wrapper x-settings-secondColumn">
-              <input id={id} className="x-toggle-input" type="checkbox" checked={value as boolean} onClick={(e) => {
-                setValue(e.currentTarget.checked);
-              }} />
+              <input
+                id={id}
+                className="x-toggle-input"
+                type="checkbox"
+                checked={value as boolean}
+                {...props.field.events}
+                onClick={(e) => {
+                  setValue(e.currentTarget.checked);
+                  const onClick = (props.field as ISettingsFieldToggle).events?.onClick
+                  if (onClick) onClick(e)
+                }} 
+              />
               <span className="x-toggle-indicatorWrapper">
                 <span className="x-toggle-indicator">
                 </span>
@@ -216,9 +246,16 @@ class SettingsSection {
             </label> :
           
           props.field.type === 'dropdown' ?
-            <select className="main-dropDown-dropDown" id={id} onChange={(e) => {
-              setValue((props.field as ISettingsFieldDropdown).options[e.currentTarget.selectedIndex])
-            }}>
+            <select
+              className="main-dropDown-dropDown"
+              id={id}
+              {...props.field.events}
+              onChange={(e) => {
+                setValue((props.field as ISettingsFieldDropdown).options[e.currentTarget.selectedIndex]);
+                const onChange = (props.field as ISettingsFieldDropdown).events?.onChange
+                if (onChange) onChange(e)
+              }}
+            >
               {
                 props.field.options.map((option, i) => {
                   return <option selected={option === value} value={i+1}>{option}</option>
