@@ -61,7 +61,7 @@ class SettingsSection {
 
       // Only loop until "show advanced settings" button is found if
       // spotify version < 1.1.80
-      if (spotifyVersion < 80) {
+      if (spotifyVersion >= 80) {
         allSettingsContainer.appendChild(pluginSettingsContainer);
       } else {
         while (true) {
