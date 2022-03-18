@@ -54,33 +54,40 @@ class SettingsSection {
       pluginSettingsContainer = document.createElement('div');
       pluginSettingsContainer.id = this.settingsId;
       pluginSettingsContainer.className = styles.settingsContainer;
+      const spotifyVersion = this.getSpotifyVersion();
       let advancedOptionsButton: Element | undefined = undefined;
       let tries = 0;
 
-      // Loop until "show advanced settings" button is found.
-      while (true) {
-        try {
-          const buttons = allSettingsContainer.getElementsByClassName('x-settings-button');
-          advancedOptionsButton = Array.from(buttons).find((button) => {
-            return (button.children[0] as HTMLButtonElement)?.type === 'button';
-          })
-        } catch (e) {
-          console.error("Error while finding \"show advanced settings\" button:", e);
-        }
-        
-        if (advancedOptionsButton) break
-        
-        if (Spicetify.Platform.History.location.pathname !== '/preferences') {
-          console.warn(`[spcr-settings] couldn't find "show advanced settings" button after ${tries} tries.`);
-          return;
+
+      // Only loop until "show advanced settings" button is found if
+      // spotify version < 1.1.80
+      if (spotifyVersion < 80) {
+        allSettingsContainer.appendChild(pluginSettingsContainer);
+      } else {
+        while (true) {
+          try {
+            const buttons = allSettingsContainer.getElementsByClassName('x-settings-button');
+            advancedOptionsButton = Array.from(buttons).find((button) => {
+              return (button.children[0] as HTMLButtonElement)?.type === 'button';
+            })
+          } catch (e) {
+            console.error("Error while finding \"show advanced settings\" button:", e);
+          }
+
+          if (advancedOptionsButton) break
+
+          if (Spicetify.Platform.History.location.pathname !== '/preferences') {
+            console.warn(`[spcr-settings] couldn't find "show advanced settings" button after ${tries} tries.`);
+            return;
+          }
+
+          tries++;
+          console.log("Couldn't find \"show advanced settings\" button. Trying again in 1000ms...");
+          await new Promise(resolve => setTimeout(resolve, 1000));
         }
 
-        tries++;
-        console.log("Couldn't find \"show advanced settings\" button. Trying again in 1000ms...");
-        await new Promise(resolve => setTimeout(resolve, 1000));
+        allSettingsContainer.insertBefore(pluginSettingsContainer, advancedOptionsButton!);
       }
-  
-      allSettingsContainer.insertBefore(pluginSettingsContainer, advancedOptionsButton!);
     } else {
       console.log(pluginSettingsContainer)
     }
@@ -150,6 +157,15 @@ class SettingsSection {
 
   setFieldValue = (nameId: string, newValue: any) => {
     Spicetify.LocalStorage.set(`${this.settingsId}.${nameId}`, JSON.stringify({ value: newValue }));
+  }
+
+  private getSpotifyVersion = () => {
+    // Version format is X.Y.Z, we are only interested in the Z value
+    const stringVersion: string =
+      Spicetify.Platform.PlatformData.client_version_triple;
+    const splitVersion = stringVersion.split('.');
+    const zValue = splitVersion[2];
+    return parseInt(zValue);
   }
 
   private FieldsContainer = () => {
