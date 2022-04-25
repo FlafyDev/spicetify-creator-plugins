@@ -1,0 +1,17 @@
+.spcr-settings-heading {
+  grid-column: 1/-1;
+  font-size: 1.125rem;
+  line-height: 1.5rem;
+  color: #fff;
+  margin-top: 24px;
+}
+
+.spcr-settings-description {
+   font-size: 0.875rem;
+   line-height: 1.25rem;
+}
+
+.spcr-setting-input-wrapper {
+   display: flex;
+   justify-self: end;
+}
