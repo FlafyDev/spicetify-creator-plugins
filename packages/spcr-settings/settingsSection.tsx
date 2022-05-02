@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import ReactDOM from 'react-dom';
 import styles from './settings.module.css'
 import { ISettingsField, ISettingsFieldButton, ISettingsFieldDropdown, ISettingsFieldInput, ISettingsFieldToggle, NewValueTypes } from './types/settings-field';
+import './styles.css';
 
 class SettingsSection {
   settingsFields: { [nameId: string]: ISettingsField } = this.initialSettingsFields;
@@ -47,7 +48,9 @@ class SettingsSection {
       await new Promise(resolve => setTimeout(resolve, 100));
     }
 
-    const allSettingsContainer = document.getElementsByClassName('x-settings-container')[0];
+    const allSettingsContainer = document.querySelector('.main-view-container__scroll-node-child main div');
+    if (!allSettingsContainer) return console.error('[spcr-settings] settings container not found');
+
     let pluginSettingsContainer = Array.from(allSettingsContainer.children).find((child) => child.id === this.settingsId)
   
     if (!pluginSettingsContainer) {
@@ -173,7 +176,7 @@ class SettingsSection {
     this.setRerender = setRerender;
 
     return <div className={styles.settingsContainer} key={rerender}>
-      <h2 className="main-shelf-title main-type-cello">{this.name}</h2>
+      <h2 className="main-shelf-title main-type-cello spcr-settings-heading">{this.name}</h2>
       {Object.entries(this.settingsFields).map(([nameId, field]) => {
         return <this.Field nameId={nameId} field={field} />
       })}
@@ -204,10 +207,10 @@ class SettingsSection {
     }
 
     return <>
-      <div className="main-type-mesto" style={{color: 'var(--spice-subtext)'}}><label htmlFor={id}>
-        {props.field.description || ""}
-      </label></div>
-      <span className="x-settings-secondColumn">
+      <div className="main-type-mesto" style={{color: 'var(--spice-subtext)'}}>
+        <label className="spcr-settings-description" htmlFor={id}>{props.field.description || ""}</label>
+      </div>
+      <span className="x-settings-secondColumn spcr-setting-input-wrapper">
         {
           props.field.type === 'input' ? 
             <input
