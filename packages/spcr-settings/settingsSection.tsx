@@ -7,6 +7,7 @@ class SettingsSection {
   settingsFields: { [nameId: string]: ISettingsField } = this.initialSettingsFields;
   private stopHistoryListener: any;
   private setRerender: Function | null = null;
+  private buttonClassnames: string | null = null;
 
   constructor(public name: string, public settingsId: string, public initialSettingsFields: { [key: string]: ISettingsField } = {}) {}
 
@@ -49,6 +50,7 @@ class SettingsSection {
 
     const allSettingsContainer = document.querySelector('.main-view-container__scroll-node-child main div');
     if (!allSettingsContainer) return console.error('[spcr-settings] settings container not found');
+    this.buttonClassnames = Array.from(allSettingsContainer.querySelectorAll(":scope > button")).at(-1)?.className ?? null;
 
     let pluginSettingsContainer = Array.from(allSettingsContainer.children).find((child) => child.id === this.settingsId)
   
@@ -189,7 +191,7 @@ class SettingsSection {
             <span className="">
               <button
                 id={id}
-                className="main-buttons-button main-button-outlined"
+                className={this.buttonClassnames ?? ""}
                 {...props.field.events}
                 onClick={(e) => {
                   setValue();
