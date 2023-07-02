@@ -110,12 +110,14 @@ class SettingsSection {
     description: string,
     defaultValue: string,
     onChange?: () => void,
+    inputType?: string,
     events?: ISettingsFieldInput["events"]
   ) => {
     this.settingsFields[nameId] = {
       type: "input",
       description: description,
       defaultValue: defaultValue,
+      inputType: inputType,
       events: {
         onChange: onChange,
         ...events,
@@ -243,7 +245,7 @@ class SettingsSection {
               id={id}
               dir="ltr"
               value={value as string}
-              type="text"
+              type={props.field.inputType || "text"}
               {...props.field.events}
               onChange={(e) => {
                 setValue(e.currentTarget.value);
