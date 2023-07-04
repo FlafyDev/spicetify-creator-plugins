@@ -7,7 +7,7 @@ export interface ISettingsFieldInput {
     type: "input",
     description?: string,
     defaultValue: any,
-    inputType?: string,
+    properties?: Record<string, string>,
     events?: Partial<React.InputHTMLAttributes<HTMLInputElement>>,
 }
 
