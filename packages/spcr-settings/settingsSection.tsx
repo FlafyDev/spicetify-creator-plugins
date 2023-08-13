@@ -71,7 +71,6 @@ class SettingsSection {
     if (!pluginSettingsContainer) {
       pluginSettingsContainer = document.createElement("div");
       pluginSettingsContainer.id = this.settingsId;
-      pluginSettingsContainer.className = "settingsContainer";
 
       allSettingsContainer.appendChild(pluginSettingsContainer);
     } else {
@@ -183,7 +182,7 @@ class SettingsSection {
 
     return (
       <div className="x-settings-section" key={rerender}>
-        <h2 className="Type__TypeElement-sc-goli3j-0 TypeElement-cello-textBase-type">
+        <h2 className="TypeElement-cello-textBase-type">
           {this.name}
         </h2>
         {Object.entries(this.settingsFields).map(([nameId, field]) => {
@@ -220,7 +219,7 @@ class SettingsSection {
       <div className="x-settings-row">
         <div className="x-settings-firstColumn">
           <label
-            className="Type__TypeElement-sc-goli3j-0 TypeElement-viola-textSubdued-type"
+            className="TypeElement-viola-textSubdued-type"
             htmlFor={id}
           >
             {props.field.description || ""}
@@ -243,10 +242,10 @@ class SettingsSection {
               }}
             />
           ) : props.field.type === "button" ? (
-            <span className="">
+            <span>
               <button
                 id={id}
-                className="Button-sc-y0gtbx-0 Button-sm-buttonSecondary-isUsingKeyboard-useBrowserDefaultFocusStyle x-settings-button"
+                className="Button-sm-buttonSecondary-isUsingKeyboard-useBrowserDefaultFocusStyle x-settings-button"
                 {...props.field.events}
                 onClick={(e) => {
                   setValue();
