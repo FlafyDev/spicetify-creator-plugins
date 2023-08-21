@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import ReactDOM from "react-dom";
-import styles from "./settings.module.css";
 import {
   ISettingsField,
   ISettingsFieldButton,
@@ -15,7 +14,6 @@ class SettingsSection {
     this.initialSettingsFields;
   private stopHistoryListener: any;
   private setRerender: Function | null = null;
-  private buttonClassnames: string | null = null;
 
   constructor(
     public name: string,
@@ -65,10 +63,6 @@ class SettingsSection {
     );
     if (!allSettingsContainer)
       return console.error("[spcr-settings] settings container not found");
-    this.buttonClassnames =
-      Array.from(allSettingsContainer.querySelectorAll(":scope > button")).at(
-        -1
-      )?.className ?? null;
 
     let pluginSettingsContainer = Array.from(
       allSettingsContainer.children
@@ -77,7 +71,6 @@ class SettingsSection {
     if (!pluginSettingsContainer) {
       pluginSettingsContainer = document.createElement("div");
       pluginSettingsContainer.id = this.settingsId;
-      pluginSettingsContainer.className = styles.settingsContainer;
 
       allSettingsContainer.appendChild(pluginSettingsContainer);
     } else {
@@ -188,12 +181,8 @@ class SettingsSection {
     this.setRerender = setRerender;
 
     return (
-      <div className={styles.settingsContainer} key={rerender}>
-        <h2
-          className={["main-shelf-title main-type-cello", styles.heading].join(
-            " "
-          )}
-        >
+      <div className="x-settings-section" key={rerender}>
+        <h2 className="TypeElement-cello-textBase-type">
           {this.name}
         </h2>
         {Object.entries(this.settingsFields).map(([nameId, field]) => {
@@ -227,21 +216,19 @@ class SettingsSection {
     };
 
     return (
-      <>
-        <div
-          className="main-type-mesto"
-          style={{ color: "var(--spice-subtext)" }}
-        >
-          <label className={styles.description} htmlFor={id}>
+      <div className="x-settings-row">
+        <div className="x-settings-firstColumn">
+          <label
+            className="TypeElement-viola-textSubdued-type"
+            htmlFor={id}
+          >
             {props.field.description || ""}
           </label>
         </div>
-        <span
-          className={["x-settings-secondColumn", styles.inputWrapper].join(" ")}
-        >
+        <div className="x-settings-secondColumn">
           {props.field.type === "input" ? (
             <input
-              className="main-dropDown-dropDown"
+              className="x-settings-input"
               id={id}
               dir="ltr"
               value={value as string}
@@ -255,10 +242,10 @@ class SettingsSection {
               }}
             />
           ) : props.field.type === "button" ? (
-            <span className="">
+            <span>
               <button
                 id={id}
-                className={this.buttonClassnames ?? ""}
+                className="Button-sm-buttonSecondary-isUsingKeyboard-useBrowserDefaultFocusStyle x-settings-button"
                 {...props.field.events}
                 onClick={(e) => {
                   setValue();
@@ -272,7 +259,7 @@ class SettingsSection {
               </button>
             </span>
           ) : props.field.type === "toggle" ? (
-            <label className="x-toggle-wrapper x-settings-secondColumn">
+            <label className="x-settings-secondColumn x-toggle-wrapper">
               <input
                 id={id}
                 className="x-toggle-input"
@@ -317,8 +304,8 @@ class SettingsSection {
           ) : (
             <></>
           )}
-        </span>
-      </>
+        </div>
+      </div>
     );
   };
 }
