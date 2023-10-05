@@ -182,7 +182,7 @@ class SettingsSection {
 
     return (
       <div className="x-settings-section" key={rerender}>
-        <h2 className="TypeElement-cello-textBase-type">
+        <h2 className="TypeElement-cello-textBase TypeElement-cello-textBase-type">
           {this.name}
         </h2>
         {Object.entries(this.settingsFields).map(([nameId, field]) => {
@@ -219,7 +219,7 @@ class SettingsSection {
       <div className="x-settings-row">
         <div className="x-settings-firstColumn">
           <label
-            className="TypeElement-viola-textSubdued-type"
+            className="TypeElement-viola-textSubdued TypeElement-viola-textSubdued-type"
             htmlFor={id}
           >
             {props.field.description || ""}
@@ -245,7 +245,7 @@ class SettingsSection {
             <span>
               <button
                 id={id}
-                className="Button-sm-buttonSecondary-isUsingKeyboard-useBrowserDefaultFocusStyle x-settings-button"
+                className="Button-sm-useBrowserDefaultFocusStyle Button-sm-isUsingKeyboard-useBrowserDefaultFocusStyle Button-sm-buttonSecondary-useBrowserDefaultFocusStyle Button-sm-buttonSecondary-isUsingKeyboard-useBrowserDefaultFocusStyle x-settings-button"
                 {...props.field.events}
                 onClick={(e) => {
                   setValue();
