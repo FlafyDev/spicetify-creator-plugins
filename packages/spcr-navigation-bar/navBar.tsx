@@ -34,7 +34,7 @@ const NavbarMore = React.memo<{ items: NavbarItem[], switchTo: SelectLinkCallbac
 });
 
 const NavbarContent = (props: { links: string[], activeLink: string, switchCallback: SelectLinkCallbackType }) => {
-  const resizeHost = (document.querySelector<HTMLDivElement>(".Root__main-view .os-resize-observer-host") ?? document.querySelector(".Root__main-view .os-size-observer"))!;
+  const resizeHost = (document.querySelector<HTMLDivElement>(".Root__main-view .os-resize-observer-host") ?? document.querySelector<HTMLDivElement>(".Root__main-view .os-size-observer"))!;
   const [windowSize, setWindowSize] = useState(resizeHost.clientWidth);
   const resizeHandler = () => setWindowSize(resizeHost.clientWidth);
 
