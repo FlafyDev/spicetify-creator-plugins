@@ -245,7 +245,7 @@ class SettingsSection {
             <span>
               <button
                 id={id}
-                className="Button-sm-buttonSecondary-isUsingKeyboard-useBrowserDefaultFocusStyle x-settings-button"
+                className="Button-sc-y0gtbx-0 Button-small-buttonSecondary-useBrowserDefaultFocusStyle x-settings-button"
                 {...props.field.events}
                 onClick={(e) => {
                   setValue();
