@@ -1,6 +1,6 @@
 {
   "name": "spcr-settings",
-  "version": "1.3.0",
+  "version": "1.3.1",
   "description": "Settings for Spicetify Creator projects",
   "main": "settingsSection.tsx",
   "repository": "github:FlafyDev/spicetify-creator-plugins",
